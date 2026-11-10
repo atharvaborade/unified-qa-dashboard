@@ -1,4 +1,5 @@
 name: Refresh unified QA dashboard
+run-name: Unified QA refresh · ${{ github.event_name }}
 
 on:
   workflow_dispatch:
