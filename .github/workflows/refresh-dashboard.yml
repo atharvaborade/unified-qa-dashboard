@@ -55,9 +55,11 @@ jobs:
         run: npm test
       - name: Restore published trend history
         continue-on-error: true
-        run: curl --fail --silent --show-error --location --output public/data/history.csv https://atharvaborade.github.io/unified-qa-dashboard/data/history.csv
+        run: curl --fail --silent --show-error --location --output /tmp/history.csv https://atharvaborade.github.io/unified-qa-dashboard/data/history.csv && mv /tmp/history.csv public/data/history.csv || true
       - name: Normalize both reports
         run: npm run aggregate
+      - name: Publish synchronized test summary
+        run: node scripts/summarize-ci.js
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
