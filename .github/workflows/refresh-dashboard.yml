@@ -35,7 +35,7 @@ jobs:
         with:
           repository: atharvaborade/slotwise-cypress-bdd
           path: sources/cypress
-          # Every refresh resolves the latest public Cypress main revision.
+          # Every parity refresh resolves the latest public Cypress main revision.
       - uses: actions/setup-node@v4
         with:
           node-version: 24
