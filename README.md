@@ -27,6 +27,8 @@ The dashboard shows totals, pass rate, failures, framework comparisons and searc
 
 The central workflow runs both suites itself, so it does not depend on expiring artifacts or manual report uploads. A failure is also data: the dashboard publishes the failed scenarios rather than hiding the run.
 
+The project uses public-repository standard runners and GitHub Pages. It does not configure paid runners, cloud databases or paid APIs.
+
 ## Power BI connection
 
 After GitHub Pages is deployed, connect Power BI Desktop with **Get data → Web** and use:

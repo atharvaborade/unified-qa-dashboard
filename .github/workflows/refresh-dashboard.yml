@@ -66,12 +66,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
-      - name: Upload normalized evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: unified-qa-data
-          path: public/data
-          retention-days: 14
       - name: Record source-suite failure
         if: steps.playwright.outcome == 'failure' || steps.cypress.outcome == 'failure'
         run: echo "One or more source suites failed; the dashboard contains the failure evidence." >> "$GITHUB_STEP_SUMMARY"
