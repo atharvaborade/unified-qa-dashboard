@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Unified Playwright and Cypress quality engineering results">
+  <title>QA Observatory · Atharva Borade</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header><a class="brand" href="./"><span>QA</span> Observatory</a><nav><a href="data/latest.csv">Power BI CSV</a><a href="data/latest.json">JSON</a></nav></header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">UNIFIED QUALITY INTELLIGENCE</p><h1>Two frameworks.<br>One honest signal.</h1><p class="lede">Scheduled Playwright and Cypress results, normalized into one public engineering dashboard.</p></div>
+      <div id="health" class="health waiting"><span></span><strong>Waiting for data</strong><small>First synchronized run pending</small></div>
+    </section>
+    <section class="metrics" aria-label="Overall quality metrics">
+      <article><span>Total scenarios</span><strong id="total">—</strong></article>
+      <article><span>Passed</span><strong id="passed">—</strong></article>
+      <article><span>Failed</span><strong id="failed">—</strong></article>
+      <article><span>Pass rate</span><strong id="rate">—</strong></article>
+    </section>
+    <section class="section-head"><div><p class="eyebrow">FRAMEWORK COMPARISON</p><h2>Latest synchronized execution</h2></div><p id="updated">Not refreshed yet</p></section>
+    <section id="frameworks" class="frameworks" aria-live="polite"></section>
+    <section class="details">
+      <div class="section-head"><div><p class="eyebrow">SCENARIO EVIDENCE</p><h2>Search the latest results</h2></div><label>Framework <select id="filter"><option value="all">All</option><option>Playwright</option><option>Cypress</option></select></label></div>
+      <label class="search">Search scenarios <input id="search" type="search" placeholder="Authentication, booking, API…"></label>
+      <div class="table-wrap"><table><thead><tr><th>Framework</th><th>Scenario</th><th>Status</th><th>Steps</th></tr></thead><tbody id="scenarios"></tbody></table></div>
+      <p id="empty" hidden>No scenarios match this view.</p>
+    </section>
+    <section class="powerbi"><div><p class="eyebrow">POWER BI READY</p><h2>Connect without copying files</h2><p>Use the published <code>data/latest.csv</code> URL in Power BI’s Web connector. The stable endpoint is replaced after each scheduled GitHub run.</p></div><a class="button" href="data/latest.csv">Open CSV source</a></section>
+  </main>
+  <footer><span>Atharva Borade · Automation QA Engineering</span><span>Playwright + Cypress + GitHub Actions</span></footer>
+</body>
+</html>
+

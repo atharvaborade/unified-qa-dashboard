@@ -1,0 +1,10 @@
+{
+  "generatedAt": null,
+  "health": "waiting",
+  "totals": { "scenarios": 0, "passed": 0, "failed": 0, "skipped": 0, "passRate": 0 },
+  "frameworks": [
+    { "framework": "Playwright", "repository": "playwright-quality-lab", "state": "waiting", "total": 0, "passed": 0, "failed": 0, "skipped": 0, "passRate": 0, "scenarios": [] },
+    { "framework": "Cypress", "repository": "slotwise-cypress-bdd", "state": "waiting", "total": 0, "passed": 0, "failed": 0, "skipped": 0, "passRate": 0, "scenarios": [] }
+  ]
+}
+

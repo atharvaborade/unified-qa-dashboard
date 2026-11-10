@@ -1,0 +1,16 @@
+{
+  "name": "unified-qa-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified Playwright and Cypress quality dashboard with Power BI-ready data",
+  "type": "module",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "start": "node scripts/server.js",
+    "aggregate": "node scripts/aggregate.js",
+    "check": "node --test tests/*.test.js"
+  }
+}
+

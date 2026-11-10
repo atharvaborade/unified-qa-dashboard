@@ -1,0 +1,90 @@
+name: Refresh unified QA dashboard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'
+  push:
+    branches: [main]
+    paths-ignore: ['README.md', 'docs/**']
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: qa-dashboard-pages
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out dashboard
+        uses: actions/checkout@v4
+      - name: Check out Playwright quality lab
+        uses: actions/checkout@v4
+        with:
+          repository: atharvaborade/playwright-quality-lab
+          path: sources/playwright
+      - name: Check out Cypress BDD lab
+        uses: actions/checkout@v4
+        with:
+          repository: atharvaborade/slotwise-cypress-bdd
+          path: sources/cypress
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install Playwright framework
+        working-directory: sources/playwright
+        run: npm ci && npx playwright install --with-deps chromium
+      - name: Run Playwright BDD suite
+        id: playwright
+        continue-on-error: true
+        working-directory: sources/playwright
+        run: npm test
+      - name: Install Cypress framework
+        working-directory: sources/cypress
+        run: npm ci
+      - name: Run Cypress BDD suite
+        id: cypress
+        continue-on-error: true
+        working-directory: sources/cypress
+        run: npm test
+      - name: Restore published trend history
+        continue-on-error: true
+        run: curl --fail --silent --show-error --location --output public/data/history.csv https://atharvaborade.github.io/unified-qa-dashboard/data/history.csv
+      - name: Normalize both reports
+        run: npm run aggregate
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload dashboard
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Upload normalized evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: unified-qa-data
+          path: public/data
+          retention-days: 14
+      - name: Record source-suite failure
+        if: steps.playwright.outcome == 'failure' || steps.cypress.outcome == 'failure'
+        run: echo "One or more source suites failed; the dashboard contains the failure evidence." >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    needs: refresh
+    if: always() && needs.refresh.result == 'success'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
