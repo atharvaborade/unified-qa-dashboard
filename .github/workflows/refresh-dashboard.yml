@@ -53,7 +53,12 @@ jobs:
         id: cypress
         continue-on-error: true
         working-directory: sources/cypress
-        run: npm test
+        run: npm run test:ci
+      - name: Generate Cypress Cucumber HTML
+        if: always()
+        continue-on-error: true
+        working-directory: sources/cypress
+        run: npm run report
       - name: Restore published trend history
         continue-on-error: true
         run: curl --fail --silent --show-error --location --output /tmp/history.csv https://atharvaborade.github.io/unified-qa-dashboard/data/history.csv && mv /tmp/history.csv public/data/history.csv || true
