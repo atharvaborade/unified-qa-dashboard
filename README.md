@@ -7,6 +7,23 @@ A public quality-intelligence dashboard that automatically executes and combines
 
 The scheduled GitHub workflow checks out both repositories, runs both suites, normalizes their Cucumber results, updates trend data and deploys the dashboard to GitHub Pages.
 
+## Dashboard preview
+
+[![Unified QA Dashboard overview showing 186 passing scenarios](docs/screenshots/dashboard-desktop.png)](https://atharvaborade.github.io/unified-qa-dashboard/)
+
+The overview combines **93 Playwright** and **93 Cypress** scenarios into one health signal. Open the [live dashboard](https://atharvaborade.github.io/unified-qa-dashboard/) to search the latest scenario evidence, filter it by framework, or download the Power BI CSV and JSON sources.
+
+![Searchable scenario evidence from Playwright and Cypress](docs/screenshots/dashboard-results.png)
+
+<details>
+<summary>View the responsive mobile layout</summary>
+
+<br>
+
+<img src="docs/screenshots/dashboard-mobile.png" alt="Unified QA Dashboard mobile layout" width="390">
+
+</details>
+
 ## Data flow
 
 ```text
