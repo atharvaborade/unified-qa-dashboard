@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const playwrightPath = resolve(process.env.PLAYWRIGHT_REPORT || 'sources/playwright/reports/run-summary.json');
 const cypressPath = resolve(process.env.CYPRESS_REPORT || 'sources/cypress/cypress/reports/cucumber-json/cucumber-report.json');
@@ -22,11 +22,20 @@ function statusFromSteps(element) {
 function normalizePlaywright(path) {
   if (!existsSync(path)) return { framework: 'Playwright', repository: 'playwright-quality-lab', state: 'missing', scenarios: [] };
   const source = JSON.parse(readFileSync(path, 'utf8'));
+  const cucumberPath = join(dirname(path), 'cucumber.json');
+  const featureQueues = new Map();
+  if (existsSync(cucumberPath)) {
+    for (const feature of JSON.parse(readFileSync(cucumberPath, 'utf8'))) for (const scenario of (feature.elements || []).filter(item => item.type === 'scenario')) {
+      const queue = featureQueues.get(scenario.name) || [];
+      queue.push(feature.name);
+      featureQueues.set(scenario.name, queue);
+    }
+  }
   return {
     framework: 'Playwright', repository: 'playwright-quality-lab', state: source.exitCode === 0 ? 'completed' : 'failed',
     startedAt: source.startedAt, finishedAt: source.finishedAt, workers: source.parallelWorkers,
     scenarios: (source.scenarios || []).map(scenario => ({
-      name: scenario.name, feature: 'Playwright BDD suite', status: scenario.status || 'unknown', steps: scenario.stepCount || 0,
+      name: scenario.name, feature: featureQueues.get(scenario.name)?.shift() || 'Playwright BDD suite', status: scenario.status || 'unknown', steps: scenario.stepCount || 0,
     })),
   };
 }
